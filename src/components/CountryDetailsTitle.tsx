@@ -19,8 +19,8 @@ export default function CountryDetailsTitle({
   countryName,
   countryFlag,
 }: {
-  countryName: string;
-  countryFlag: string;
+  countryName?: string;
+  countryFlag?: string;
 }): JSX.Element {
   return (
     <h1 className="mt-5">

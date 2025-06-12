@@ -8,26 +8,27 @@ import { JSX } from 'react';
  * @param {CountryDetails} props.country - The country data to display.
  * @returns {JSX.Element} The rendered country details section.
  */
-export default function CountryInfo({ country }: { country: CountryDetails }): JSX.Element {
+export default function CountryInfo({ country }: { country: CountryDetails | null }): JSX.Element {
   return (
     <section>
       <span className="font-bold">Details</span>
       <ul className="text-sm dark:text-gray-300">
-        <li>Capital: {country.capital ?? 'Not found'}</li>
-        <li>Region: {country.region ?? 'Not found'}</li>
+        <li>Capital: {country?.capital ?? 'Not found'}</li>
+        <li>Region: {country?.region ?? 'Not found'}</li>
         <li>
           Population:{' '}
-          {country.population
-            ? new Intl.NumberFormat('en-US').format(country.population)
+          {country?.population
+            ? new Intl.NumberFormat('en-US').format(country?.population)
             : 'Not found'}
         </li>
         <li>
-          Languages: {country.languages ? Object.values(country.languages).join(', ') : 'Not found'}
+          Languages:{' '}
+          {country?.languages ? Object.values(country?.languages).join(', ') : 'Not found'}
         </li>
         <li>
-          Currencies:
-          {country.currencies
-            ? Object.entries(country.currencies)
+          Currencies:{' '}
+          {country?.currencies
+            ? Object.entries(country?.currencies)
                 .map(([code, { name, symbol }]) => `${code} - ${name} (${symbol})`)
                 .join(', ')
             : 'Not found'}

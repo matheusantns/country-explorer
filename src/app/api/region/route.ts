@@ -1,6 +1,6 @@
 import { Country } from '@/types/countries';
 import { BASE_URL } from '@/utils/contants';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 
 type Data = {
   countries: Pick<Country, 'name' | 'region'>[];
@@ -13,15 +13,11 @@ type ErrorResponse = {
 /**
  * API handler that fetches a list of countries and filters them by region.
  *
- * @param {NextApiRequest} req - The incoming API request object. Expects a `region` query parameter.
- * @param {NextApiResponse<Data | ErrorResponse>} res - The API response object.
  * @returns {Promise<void>} A JSON response with filtered countries or an error message.
  */
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data | ErrorResponse>
-): Promise<void> {
-  const { region } = req.query;
+export async function GET(request: Request): Promise<NextResponse<Data | ErrorResponse>> {
+  const { searchParams } = new URL(request.url);
+  const region = searchParams.get('region');
 
   try {
     const response = await fetch(`${BASE_URL}/all?fields=name,region`);
@@ -32,11 +28,11 @@ export default async function handler(
 
     const countries = (await response.json()) as Pick<Country, 'name' | 'region'>[];
 
-    res.status(200).json({
-      countries: countries.filter((country) => country.region === region),
-    });
+    const filtered = region ? countries.filter((country) => country.region === region) : countries;
+
+    return NextResponse.json({ countries: filtered });
   } catch (error) {
     console.error('API error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

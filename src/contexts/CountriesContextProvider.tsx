@@ -1,3 +1,5 @@
+'use client';
+
 import { Country } from '@/types/countries';
 import { Regions } from '@/types/regions';
 import { saveFavoriteCountries } from '@/utils/handleLocalStorage';

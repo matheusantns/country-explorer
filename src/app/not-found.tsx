@@ -11,7 +11,7 @@ const notoEmoji = Noto_Color_Emoji({
   weight: '400',
 });
 
-export default function Custom404() {
+export default function NotFound() {
   return (
     <main
       className={`${geistMono.className} 

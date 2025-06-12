@@ -1,3 +1,5 @@
+'use client';
+
 import { useCountries } from '@/hooks/useCountriesContext';
 import { Regions } from '@/types/regions';
 import { JSX } from 'react';

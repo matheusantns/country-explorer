@@ -1,3 +1,5 @@
+'use client';
+
 import { CircleX } from 'lucide-react';
 import SelectRegion from './SelectRegion';
 import { useCountries } from '@/hooks/useCountriesContext';
