@@ -1,7 +1,7 @@
 import { Dispatch, JSX, MouseEvent, SetStateAction, useEffect } from 'react';
 import CountryItem from './CountryItem';
 import { Country } from '@/types/countries';
-import { loadFavoriteCountries } from '@/utils/handleLocalStorage';
+import { getStoredFavorites } from '@/utils/handleLocalStorage';
 
 interface CountriesContainerProps {
   setCountriesList?: Dispatch<SetStateAction<Country[]>>;
@@ -23,7 +23,7 @@ export default function CountriesContainer({
   page = 'home',
 }: CountriesContainerProps): JSX.Element {
   useEffect(() => {
-    const favorites = loadFavoriteCountries();
+    const favorites = getStoredFavorites();
 
     if (favorites.length > 0) {
       const favoriteNamesSet = new Set(favorites.map((fav) => fav.name.official));
@@ -37,7 +37,7 @@ export default function CountriesContainer({
         );
       }
     }
-  }, []);
+  }, [setCountriesList]);
 
   return (
     <div className="mt-6 flex flex-wrap gap-3">

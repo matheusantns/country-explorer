@@ -1,46 +1,41 @@
-import { JSX, useEffect, useState } from "react";
-import CountryDetailsTitle from "@/components/CountryDetailsTitle";
-import CountryInfo from "@/components/CountryInfo";
-import Header from "@/components/Header";
-import { Country, CountryDetails } from "@/types/countries";
-import { BASE_URL } from "@/utils/contants";
-import Head from "next/head";
+import { JSX } from 'react';
+import CountryDetailsTitle from '@/components/CountryDetailsTitle';
+import CountryInfo from '@/components/CountryInfo';
+import Header from '@/components/Header';
+import { Country, CountryDetails } from '@/types/countries';
+import { BASE_URL } from '@/utils/constants';
+import Head from 'next/head';
+
+export const getServerSideProps = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/all?fields=name`);
+    const countryList = (await response.json()) as Pick<Country, 'name'>[];
+
+    const randomIndex = Math.floor(Math.random() * countryList.length);
+    const randomName = countryList[randomIndex].name.official;
+
+    const detailsResponse = await fetch(`${BASE_URL}/name/${randomName}?fullText=true`);
+    const data: CountryDetails[] = await detailsResponse.json();
+
+    return { props: { country: data[0] } };
+  } catch (error) {
+    console.error('Error fetching random country:', error);
+    return { notFound: true };
+  }
+};
 
 /**
- * Page component that fetches and displays a random country's details.
+ * Page component that displays the details of a randomly selected country.
  *
  * @param {Object} props - Component props.
- * @param {Pick<Country, 'name'>[]} props.countryList - List of countries with only their names.
- * @returns {JSX.Element} The random country details page.
+ * @param {CountryDetails} props.country - The full details of the randomly selected country.
+ * @returns {JSX.Element} The rendered random country details page.
  */
-export default function RandomCountryPage({
-  countryList,
-}: {
-  countryList: Pick<Country, "name">[];
-}): JSX.Element {
-  const [country, setCountry] = useState<CountryDetails | null>(null);
-
-  useEffect(() => {
-    async function fetchRandomCountry() {
-      const randomIndex = Math.floor(Math.random() * countryList.length);
-      const randomName = countryList[randomIndex].name.official;
-
-      try {
-        const res = await fetch(`${BASE_URL}/name/${randomName}?fullText=true`);
-        const data: CountryDetails[] = await res.json();
-        setCountry(data[0]);
-      } catch (error) {
-        console.error("Error fetching country details:", error);
-      }
-    }
-
-    fetchRandomCountry();
-  }, [countryList]);
-
+export default function RandomCountryPage({ country }: { country: CountryDetails }): JSX.Element {
   return (
     <>
       <Head>
-        <title>{country?.name.common} | Country Explorer</title>
+        <title>{`${country?.name.common} | Country Explorer`}</title>
         <meta name="description" content="Explore countries around the world" />
       </Head>
       <main
@@ -51,27 +46,9 @@ export default function RandomCountryPage({
         font-[family-name:var(--font-geist-mono)]`}
       >
         <Header />
-        {country ? (
-          <>
-            <CountryDetailsTitle
-              countryName={country.name.official}
-              countryFlag={country.flag}
-            />
-            <CountryInfo country={country} />
-          </>
-        ) : (
-          <p className="pt-8 font-[family-name:var(--font-geist-mono)]">
-            Loading random country...
-          </p>
-        )}
+        <CountryDetailsTitle countryName={country.name.official} countryFlag={country.flag} />
+        <CountryInfo country={country} />
       </main>
     </>
   );
 }
-
-export const getServerSideProps = async () => {
-  const response = await fetch(`${BASE_URL}/all?fields=name`);
-  const countryList = (await response.json()) as Pick<Country, "name">[];
-
-  return { props: { countryList } };
-};

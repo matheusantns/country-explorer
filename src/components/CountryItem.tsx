@@ -40,7 +40,7 @@ export default function CountryItem({
               type="button"
               className={`z-10 cursor-pointer text-gray-400 transition 
               ${country.favorite ? 'opacity-100 filter-none' : 'opacity-50 grayscale'}`}
-              onClick={(e) => toggleFavorite && toggleFavorite(e, country.name.official)}
+              onClick={(e) => toggleFavorite?.(e, country.name.official)}
             >
               ❤️
             </button>

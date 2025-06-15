@@ -1,5 +1,5 @@
 import { Country } from '@/types/countries';
-import { BASE_URL } from '@/utils/contants';
+import { BASE_URL } from '@/utils/constants';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 type Data = {

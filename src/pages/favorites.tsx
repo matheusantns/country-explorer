@@ -1,14 +1,14 @@
-import CountriesContainer from "@/components/CountriesContainer";
-import Header from "@/components/Header";
-import { Country } from "@/types/countries";
-import { loadFavoriteCountries } from "@/utils/handleLocalStorage";
-import { Geist_Mono } from "next/font/google";
-import Head from "next/head";
-import { JSX, useEffect, useState } from "react";
+import CountriesContainer from '@/components/CountriesContainer';
+import Header from '@/components/Header';
+import { Country } from '@/types/countries';
+import { getStoredFavorites } from '@/utils/handleLocalStorage';
+import { Geist_Mono } from 'next/font/google';
+import Head from 'next/head';
+import { JSX, useEffect, useState } from 'react';
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 /**
@@ -20,7 +20,7 @@ export default function FavoritesPage(): JSX.Element {
   const [favorites, setFavorites] = useState<Country[]>([]);
 
   useEffect(() => {
-    setFavorites(loadFavoriteCountries());
+    setFavorites(getStoredFavorites());
   }, []);
 
   return (
@@ -40,16 +40,12 @@ export default function FavoritesPage(): JSX.Element {
         <Header />
         <h1 className="mt-5">
           Your country
-          <span className="block text-3xl font-semibold text-blue-500">
-            Favorites
-          </span>
+          <span className="block text-3xl font-semibold text-blue-500">Favorites</span>
         </h1>
         {favorites.length > 0 ? (
           <CountriesContainer page="favorites" filteredCountries={favorites} />
         ) : (
-          <span className="block mt-2 text-sm">
-            No favorite countries to display 😫
-          </span>
+          <span className="block mt-2 text-sm">No favorite countries to display 😫</span>
         )}
       </div>
     </>
