@@ -1,5 +1,5 @@
 import { Country } from '@/types/countries';
-import { BASE_URL } from '@/utils/contants';
+import { BASE_URL } from '@/utils/constants';
 import { NextResponse } from 'next/server';
 
 type Data = {

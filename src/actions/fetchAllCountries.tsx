@@ -1,5 +1,5 @@
 import { Country } from '@/types/countries';
-import { BASE_URL } from '@/utils/contants';
+import { BASE_URL } from '@/utils/constants';
 
 /**
  * Fetches a list of countries with limited fields and adds a `favorite` property.

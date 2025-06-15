@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import { Metadata } from 'next';
 import fetchRandomCountry from '@/actions/fetchRandomCountry';
 import PageRandomWrapper from '@/components/PageRandomWrapper';
+import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Random | Country Explorer',
@@ -18,6 +19,10 @@ export const metadata: Metadata = {
  */
 export default async function RandomCountryPage(): Promise<JSX.Element> {
   const country = await fetchRandomCountry();
+
+  if (!country) {
+    notFound();
+  }
 
   return (
     <>

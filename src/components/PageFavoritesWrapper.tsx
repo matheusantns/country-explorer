@@ -1,23 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
 import CountriesContainer from './CountriesContainer';
 import { Country } from '@/types/countries';
-import { loadFavoriteCountries } from '@/utils/handleLocalStorage';
+import { getStoredFavorites } from '@/utils/handleLocalStorage';
 
-export default function PageFavoritesWrapper() {
+/**
+ * Wrapper component for displaying favorite countries.
+ * Loads favorite countries from localStorage on mount.
+ *
+ * @returns {JSX.Element} A list of favorite countries or a fallback message.
+ */
+export default function PageFavoritesWrapper(): JSX.Element {
   const [favorites, setFavorites] = useState<Country[]>([]);
 
   useEffect(() => {
-    setFavorites(loadFavoriteCountries());
+    setFavorites(getStoredFavorites());
   }, []);
 
   return (
     <>
       {favorites.length > 0 ? (
-        <>
-          <CountriesContainer page="favorites" filteredCountries={favorites} />
-        </>
+        <CountriesContainer page="favorites" filteredCountries={favorites} />
       ) : (
         <span className="block mt-2 text-sm">No favorite countries to display 😫</span>
       )}

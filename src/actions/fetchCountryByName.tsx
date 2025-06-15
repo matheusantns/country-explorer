@@ -1,5 +1,5 @@
 import { CountryDetails } from '@/types/countries';
-import { BASE_URL } from '@/utils/contants';
+import { BASE_URL } from '@/utils/constants';
 
 /**
  * Fetches detailed information about a country by its full name.
