@@ -1,12 +1,12 @@
-import fetchCountryByName from '@/actions/fetchCountryByName';
-import CountryDetailsTitle from '@/components/CountryDetailsTitle';
-import CountryInfo from '@/components/CountryInfo';
-import Header from '@/components/Header';
-import { Country, CountryDetails } from '@/types/countries';
-import { BASE_URL } from '@/utils/constants';
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { JSX } from 'react';
+import fetchCountryByName from "@/actions/fetchCountryByName";
+import CountryDetailsTitle from "@/components/CountryDetailsTitle";
+import CountryInfo from "@/components/CountryInfo";
+import Header from "@/components/Header";
+import { CountryDetails } from "@/types/countries";
+import { BASE_URL } from "@/utils/constants";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { JSX } from "react";
 
 interface CountryDetailsProps {
   params: Promise<{ name: string }>;
@@ -15,14 +15,16 @@ interface CountryDetailsProps {
 
 export async function generateStaticParams() {
   const response = await fetch(`${BASE_URL}/all?fields=name`);
-  const countries: Pick<CountryDetails, 'name'>[] = await response.json();
+  const countries: Pick<CountryDetails, "name">[] = await response.json();
 
   return countries.map((country) => ({
     name: country.name.official,
   }));
 }
 
-export async function generateMetadata({ params }: CountryDetailsProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: CountryDetailsProps): Promise<Metadata> {
   const { name } = await params;
   const decodedName = decodeURIComponent(name);
 
@@ -57,7 +59,10 @@ export default async function CountryDetailsPage({
           font-[family-name:var(--font-geist-mono)]`}
     >
       <Header />
-      <CountryDetailsTitle countryName={country?.name.official} countryFlag={country?.flag} />
+      <CountryDetailsTitle
+        countryName={country?.name.official}
+        countryFlag={country?.flag}
+      />
       <CountryInfo country={country} />
     </main>
   );
